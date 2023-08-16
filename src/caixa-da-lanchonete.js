@@ -1,10 +1,11 @@
 class CaixaDaLanchonete {
   calcularValorDaCompra(metodoDePagamento, itens) {
-    // caso do pagamento não aceito/inválido
+    // caso de não ter itens comprados
     if (itens.length === 0) {
       return 'Não há itens no carrinho de compra!'
     }
 
+    // caso do pagamento não aceito/inválido
     if (
       !(
         metodoDePagamento === 'dinheiro' ||
@@ -22,30 +23,30 @@ class CaixaDaLanchonete {
     let nQueijo = 0
     let nSanduicho = 0
 
-    // ['cafe,1','chantily,1']
-    for (let i = 0; i < size; i++) {
+    // verificador de se o acessório acompanha o principal
+    // (metodoPagamento, ['cafe,1','chantily,1'])
+    itens.forEach(element => {
       let orderArrayTest = []
-      orderArrayTest = itens[i].split(',')
-      for (let j = 0; j < size; j++) {
-        if (orderArrayTest[j] === 'chantily') {
-          nChantily++
-        }
-        if (orderArrayTest[j] === 'cafe') {
-          nCafe++
-        }
-        if (orderArrayTest[j] === 'queijo') {
-          nQueijo++
-        }
-        if (orderArrayTest[j] === 'sanduiche') {
-          nSanduicho++
-        }
+      orderArrayTest = element.split(',')
+      if (orderArrayTest[0] === 'chantily') {
+        nChantily++
       }
-    }
+      if (orderArrayTest[0] === 'cafe') {
+        nCafe++
+      }
+      if (orderArrayTest[0] === 'queijo') {
+        nQueijo++
+      }
+      if (orderArrayTest[0] === 'sanduiche') {
+        nSanduicho++
+      }
+    })
+
     if (nChantily > nCafe || nQueijo > nSanduicho) {
       return 'Item extra não pode ser pedido sem o principal'
     }
 
-    let obj = {
+    let codPrices = {
       cafe: 3,
       chantily: 1.5,
       suco: 6.2,
@@ -64,14 +65,14 @@ class CaixaDaLanchonete {
       let order = orderArray[0]
       let quantity = orderArray[1]
 
-      if (!(order in obj)) {
+      if (!(order in codPrices)) {
         return 'Item inválido!'
       }
 
       if (quantity < 1) {
         return 'Quantidade inválida!'
       }
-      value += obj[order] * quantity
+      value += codPrices[order] * quantity
     }
 
     if (metodoDePagamento === 'dinheiro') {
@@ -84,9 +85,7 @@ class CaixaDaLanchonete {
       value = value + value * charge
     }
 
-    value = value.toFixed(2)
-
-    return 'R$ ' + value.toString().replace('.', ',')
+    return 'R$ ' + value.toFixed(2).toString().replace('.', ',')
   }
 }
 
