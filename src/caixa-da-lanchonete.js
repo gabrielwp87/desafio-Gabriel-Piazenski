@@ -42,7 +42,7 @@ class CaixaDaLanchonete {
       }
     })
 
-    if (nChantily > nCafe || nQueijo > nSanduicho) {
+    if ((nChantily > 0 && nCafe < 1) || (nQueijo > 0 && nSanduicho < 1)) {
       return 'Item extra não pode ser pedido sem o principal'
     }
 
